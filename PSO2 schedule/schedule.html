@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <title>PSO2 Events Schedule</title>
+
+    <!-- WinJS 引用 -->
+    <link href="WinJS/css/ui-light.css" rel="stylesheet" />
+    <script src="WinJS/js/base.js"></script>
+    <script src="WinJS/js/ui.js"></script>
+
+    <!-- PSO2_schedule 引用 -->
+    <link href="css/schedule.css" rel="stylesheet" />
+    <script src="js/jquery.js"></script>
+    <script src="js/windows-function.js"></script>
+    <script src="js/default.js"></script>
+    <script src="js/schedule.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/notification.js"></script>
+    <script src="js/random.js"></script>
+    <script src="js/front.js"></script>
+    <script src="js/background.js"></script>
+</head>
+<body class="win-type-body">
+    
+    <div class="zankyo-container">
+        <progress style="width:100%;position:absolute;top:-10px"></progress>
+        <img style="max-width:450px" src="images/pso2.png" />
+        <p>Event Schedule</p>
+        <button id="analyze-btn" class="win-button">Analyze Schedule</button>
+        <button id="find-btn" class="win-button">Latest Random Quests</button>
+        <div id="settings" class="settings">
+            <div id="expireSetting"></div>
+            <div id="notificationSetting"></div>
+        </div>
+        <p id="info">Please Click "Analyze Schedule"</p>        
+        <div id="tableView"></div>
+    </div>
+    
+</body>
+</html>

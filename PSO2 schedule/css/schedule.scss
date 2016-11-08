@@ -1,0 +1,52 @@
+﻿body {
+    background: #f0f0f0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#btn {
+    
+}
+
+.zankyo-container {
+    text-align: center;
+}
+
+.settings{
+    #expireSetting{
+        display: inline-block;
+        width: 49%;
+    }
+    #notificationSetting{
+        display: inline-block;
+        width:49%;
+    }
+}
+
+#tableView{
+
+    .one-day{
+
+        .date{
+            background: #333333;
+            color: white;
+            padding: 5px 0;
+        }
+
+        .event{
+            padding: 5px 10%;
+
+
+            .time{
+                display: inline-block;
+                width: 30%;
+                text-align: left;
+            }
+            .name{
+                display: inline-block;
+                width: 70%;
+                text-align: right;
+            }
+        }
+    }
+}
