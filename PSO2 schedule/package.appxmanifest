@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="234ZankyoStudio.PSO2EventSchedule" Version="1.1.1.0" Publisher="CN=3A93F7CD-27FA-4433-B4E0-D25EBE9DD5E6" />
+  <Identity Name="234ZankyoStudio.PSO2EventSchedule" Version="1.1.2.0" Publisher="CN=3A93F7CD-27FA-4433-B4E0-D25EBE9DD5E6" />
   <mp:PhoneIdentity PhoneProductId="4a462da5-0867-437f-92ca-eed2178595da" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>PSO2 Event Schedule</DisplayName>
@@ -17,9 +17,10 @@
     <Application Id="App" StartPage="schedule.html">
       <uap:VisualElements DisplayName="PSO2 Event Schedule" Description="View and notify PSO2 events" BackgroundColor="transparent" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png">
         <uap:LockScreen Notification="badge" BadgeLogo="images\BadgeLogo.png" />
-        <uap:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png" ShortName="PSO2 EventsS" Square71x71Logo="images\Square71x71Logo.png">
+        <uap:DefaultTile Wide310x150Logo="images\Wide310x150Logo.png" ShortName="PSO2 EventsS" Square71x71Logo="images\Square71x71Logo.png" Square310x310Logo="images\Square310x310Logo.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />
+            <uap:ShowOn Tile="square310x310Logo" />
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
         <uap:SplashScreen Image="images\splashscreen.png" />

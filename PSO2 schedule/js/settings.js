@@ -59,7 +59,16 @@ function defaultSettings() {
         var expiredToggle = document.createElement('div');
         expiredToggle.id = 'expiredToggle';
         var expiredToggleCheck = showExpired;
-        expiredToggleControl = new WinJS.UI.ToggleSwitch(expiredToggle, { title: 'Show expired events', checked: expiredToggleCheck, onchange: toggleExpired });
+
+        var showExpiredEventsTitle = 'Show expired events';
+        if (window.navigator.language == 'zh-CN')
+            showExpiredEventsTitle = '显示过往事件';
+        if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+            showExpiredEventsTitle = '顯示過往事件';
+        if (window.navigator.language == 'ja-JP')
+            showExpiredEventsTitle = '過去のイベントを表示する';
+
+        expiredToggleControl = new WinJS.UI.ToggleSwitch(expiredToggle, { title: showExpiredEventsTitle, checked: expiredToggleCheck, onchange: toggleExpired });
         showExpiredSettingsDiv.appendChild(expiredToggle);
     }
 
@@ -76,7 +85,16 @@ function defaultSettings() {
         var notificationToggle = document.createElement('div');
         notificationToggle.id = 'notificationToggle';
         var notificationToggleCheck = pushNotifications;
-        notificationToggleControl = new WinJS.UI.ToggleSwitch(notificationToggle, { title: 'Notifications', checked: notificationToggleCheck, onchange: toggleNotifications });
+
+        var notificationTitle = 'Notifications';
+        if (window.navigator.language == 'zh-CN')
+            notificationTitle = '事件提醒';
+        if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+            notificationTitle = '事件提醒';
+        if (window.navigator.language == 'ja-JP')
+            notificationTitle = 'リマインダー';
+
+        notificationToggleControl = new WinJS.UI.ToggleSwitch(notificationToggle, { title: notificationTitle, checked: notificationToggleCheck, onchange: toggleNotifications });
         pushNotificationsSettingsDiv.appendChild(notificationToggle);
     }
 

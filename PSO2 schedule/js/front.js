@@ -3,6 +3,29 @@
 $(function () {
 
     "use strict";
+    console.log(window.navigator.language);
+
+    if (window.navigator.language == 'zh-CN')
+    {
+        $("#analyze-btn").text('分析时间表');
+        $("#find-btn").text('查找最近的随机紧急');
+        $('#info').text('请点击"分析时间表"');
+        $('#app-title').text('事件时间表');
+    }
+    if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+    {
+        $("#analyze-btn").text('分析時間表');
+        $("#find-btn").text('查找最近的隨機緊急');
+        $('#info').text('請點擊"分析時間表"');
+        $('#app-title').text('事件時間表');
+    }
+    if (window.navigator.language == 'ja-JP')
+    {
+        $("#analyze-btn").text('スケジュール分析開始');
+        $("#find-btn").text('最新ランダム緊急を探す');
+        $("#find-btn").text('「スケジュール分析開始」をクリックしてください');
+        $('#app-title').text('イベントスケジュール');
+    }
 
     //var applicationData = Windows.Storage.ApplicationData.current;
 
@@ -32,7 +55,17 @@ function startAnalyze() {
     var keyword = '予告イベント';
 
     var btn = $('#analyze-btn');
-    btn.text('Analyzing......');
+
+    console.log(window.navigator.language);
+    if (window.navigator.language == 'zh-CN')
+        btn.text('分析中……');
+    else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+        btn.text('分析中……');
+    else if (window.navigator.language == 'ja-JP')
+        btn.text('分析中・・・');
+    else
+        btn.text('Analyzing......');
+
     WinJS.UI.Animation.exitContent(document.getElementById('tableView'), null).done(function () { });
     $('progress').animate({ top: '10px' }, 500);
 
@@ -60,7 +93,16 @@ function startAnalyze() {
             buildInfo(info);
             WinJS.UI.Animation.enterContent(document.getElementById('tableView'), null);
             Zankyo.pushNotifications(info.events);
-            btn.text('Analyze Schedule');
+
+            if (window.navigator.language == 'zh-CN')
+                btn.text('分析时间表');
+            else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+                btn.text('分析時間表');
+            else if (window.navigator.language == 'ja-JP')
+                btn.text('スケジュール分析開始');
+            else
+                btn.text('Analyze Schedule');
+
             $('progress').animate({ top: '-10px' }, 500);
             info.week = week;
             //Zankyo.setStorageJSON('info', info);

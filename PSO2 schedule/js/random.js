@@ -1,5 +1,15 @@
 ﻿function FindRandomEvents() {
-    $('#find-btn').text('Finding Random Quests');
+
+    var btn = $('#find-btn');
+    if (window.navigator.language == 'zh-CN')
+        btn.text('查找中……');
+    else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+        btn.text('查找中……');
+    else if (window.navigator.language == 'ja-JP')
+        btn.text('検索中・・・');
+    else
+        btn.text('Searching......');
+    
     $.ajax({
         url: 'https://twitter.com/pso2_emg_hour',
         dataType: 'text',
@@ -7,7 +17,15 @@
     }).done(function (data) {
         var jObj = $(data);
         AnalyzeRandomEvents(jObj);
-        $('#find-btn').text('Latest Random Quests');
+
+        if (window.navigator.language == 'zh-CN')
+            btn.text('查找最近的随机紧急');
+        else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+            btn.text('查找最近的隨機緊急');
+        else if (window.navigator.language == 'ja-JP')
+            btn.text('最新ランダム緊急を探す');
+        else
+            btn.text('Search Latest Random Quests');
     });
     
 }
@@ -44,8 +62,21 @@ function AnalyzeRandomEvents(jObj) {
             message += 'Ship' + shipEvent[i].ship + '「' + shipEvent[i].name + '」, ';
         }
     }
-    if (message.length > 0 || Date.now() < eventTime) {
+    if (message.length <= 0)
+    {
+        if (window.navigator.language == 'zh-CN')
+            message = '没有找到随机紧急。';
+        else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+            message = '沒有找到隨機緊急。';
+        else if (window.navigator.language == 'ja-JP')
+            message = 'ランダム緊急が見つかりませんでした。';
+        else
+            message = 'No random quests found.';
+    }
+    else
         message = message.slice(0, message.length - 2);
+    if (true/*message.length > 0 && Date.now() < eventTime + 30*60*1000*/) {
+        
         var event = {
             name: message,
             time: eventTime.getTime()

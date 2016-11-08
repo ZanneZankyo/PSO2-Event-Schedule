@@ -58,7 +58,7 @@
         pushTileNotification(test2);*/
     
         for (var i in events) {
-            if (events[i].time > Date.now()) {
+            if (events[i].time + 60*60*1000 > Date.now()) {
                 Zankyo.pushToastNotification(events[i]);
                 Zankyo.pushTileNotification(events[i]);           
             }   
@@ -76,7 +76,7 @@
     pushToastNotification: function(event) {
         var Notifications = Windows.UI.Notifications;
         var currentTime = new Date();
-        var dueTime = Date.now() > event.time - 15 * 60 * 1000 ? new Date(Date.now() + 1000) : new Date(event.time - 15 * 60 * 1000);
+        var dueTime = Date.now() > event.time - 15 * 60 * 1000 ? new Date(Date.now() + 500) : new Date(event.time - 15 * 60 * 1000);
         var idNumber = Math.floor(Math.random() * 100000000);  // Generates a unique ID number for the notification.
 
         // Set up the notification text.
@@ -104,7 +104,7 @@
 
         var Notifications = Windows.UI.Notifications;
         var currentTime = new Date();
-        var dueTime = Date.now() > event.time - 60 * 60 * 1000? new Date(Date.now()+1000):new Date(event.time - 60 * 60 * 1000);
+        var dueTime = Date.now() > event.time - 60 * 60 * 1000? new Date(Date.now()+500):new Date(event.time - 60 * 60 * 1000);
         var idNumber = Math.floor(Math.random() * 100000000);  // Generates a unique ID number for the notification.
 
         var tileXml = Notifications.TileUpdateManager.getTemplateContent(Notifications.TileTemplateType.tileWide310x150ImageAndText01);
@@ -133,7 +133,7 @@
 
         // Create the notification object.
         var futureTile = new Notifications.ScheduledTileNotification(tileXml, dueTime);
-        futureTile.expirationTime = new Date( event.time + 30 * 60 * 1000);
+        futureTile.expirationTime = new Date( event.time + 60 * 60 * 1000);
         futureTile.id = "Tile" + idNumber;
 
         //console.log(futureTile);
@@ -162,13 +162,25 @@
         var Notifications = Windows.UI.Notifications;
         var currentTime = new Date();
         //var dueTime = Date.now() > event.time - 15 * 60 * 1000 ? new Date(Date.now() + 1000) : new Date(event.time - 15 * 60 * 1000);
-        var dueTime = new Date(Date.now() + 1000);
+        var dueTime = new Date(Date.now() + 500);
         var idNumber = Math.floor(Math.random() * 100000000);  // Generates a unique ID number for the notification.
 
         // Set up the notification text.
         var toastXml = Notifications.ToastNotificationManager.getTemplateContent(Notifications.ToastTemplateType.toastText02);
         var strings = toastXml.getElementsByTagName("text");
-        strings[0].appendChild(toastXml.createTextNode('Random quests at '+formatTime(event.time)));
+
+        var message;
+        if (window.navigator.language == 'zh-CN')
+            message = formatTime(event.time) + '的随机緊急：';
+        else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+            message = formatTime(event.time) + '的随机緊急：';
+        else if (window.navigator.language == 'ja-JP')
+            message = formatTime(event.time) + 'のランダム緊急：';
+        else
+            message = 'Random quests at ' + formatTime(event.time)+':';
+
+
+        strings[0].appendChild(toastXml.createTextNode(message));
         strings[1].appendChild(toastXml.createTextNode(event.name));
 
         // Create the toast notification object.

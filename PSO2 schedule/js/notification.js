@@ -1,1 +1,4 @@
-﻿
+﻿function notification()
+{
+    return;
+}
