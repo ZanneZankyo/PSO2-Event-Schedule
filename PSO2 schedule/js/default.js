@@ -11,6 +11,8 @@
 			if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
 			    //TODO: 已经新启动此应用程序。请在此初始化你的应用程序。
 			    defaultSettings();
+			    //cancelBackgroundTasks();
+			    registerBackgroundTasks("findRandomQuest", 0);
 			} else {
 				// TODO: 此应用程序已挂起，然后终止。
 				// 若要创造顺畅的用户体验，请在此处还原应用程序状态，使应用似乎永不停止运行。

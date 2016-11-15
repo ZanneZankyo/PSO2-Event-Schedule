@@ -1,4 +1,6 @@
-﻿var Zankyo = {
+﻿"use strict";
+
+var Zankyo = {
     getStorage: function (key) {
         var applicationData = Windows.Storage.ApplicationData.current;
         var localSettings = applicationData.localSettings;
@@ -35,27 +37,27 @@
         var applicationData = Windows.Storage.ApplicationData.current; 
         var localFolder = applicationData.localFolder; 
 
-        localFolder.getFileAsync("info.txt").then(function getFileSuccess(file) {
-            if (file.isAvailable)
-                return Windows.Storage.FileIO.readTextAsync(file);
-            else
-                return "";
-        }).done(function (info) {
-            callback(JSON.parse(info))
-        }, function () {
+        try{
+            localFolder.getFileAsync("info.txt").then(function getFileSuccess(file) {
+                if (file.isAvailable)
+                    return Windows.Storage.FileIO.readTextAsync(file);
+                else
+                    return "";
+            }).done(function (info) {
+                callback(JSON.parse(info))
+            }, function () {
+                callback(undefined);
+            });
+        }catch(e){
             callback(undefined);
-        });
+        }
+        
     },
 
     pushNotifications: function(events) {
         console.log(events)
 
         Zankyo.cancelNotifications();
-
-        /*var test = { name: '「解き放たれし鋼鉄の威信」', time: Date.now() + 15 * 60 * 1000 + 1000 };
-        pushToastNotification(test);
-        var test2 = { name: '「解き放たれし鋼鉄の威信」', time: Date.now() + 60 * 60 * 1000 + 1000 };
-        pushTileNotification(test2);*/
     
         for (var i in events) {
             if (events[i].time + 60*60*1000 > Date.now()) {
@@ -88,6 +90,7 @@
         // Create the toast notification object.
         var toast = new Notifications.ScheduledToastNotification(toastXml, dueTime);
         toast.id = "Toast" + idNumber;
+        toast.tag = "Schedule";
 
         // Add to the schedule.
         Notifications.ToastNotificationManager.createToastNotifier().addToSchedule(toast);
@@ -135,6 +138,7 @@
         var futureTile = new Notifications.ScheduledTileNotification(tileXml, dueTime);
         futureTile.expirationTime = new Date( event.time + 60 * 60 * 1000);
         futureTile.id = "Tile" + idNumber;
+        futureTile.tag = "Schedule";
 
         //console.log(futureTile);
 
@@ -155,6 +159,24 @@
         var tileSchedules = TileUpdater.getScheduledTileNotifications();
         for (var i = 0; i < tileSchedules.length; i++) {
             TileUpdater.removeFromSchedule(tileSchedules.getAt(i));
+        }
+    },
+
+    cancelRandomEventNotifications: function () {
+        "use strict";
+        var Notifications = Windows.UI.Notifications;
+        var ToastNotifier = Notifications.ToastNotificationManager.createToastNotifier();
+        var toastSchedules = ToastNotifier.getScheduledToastNotifications();
+        for (var i = 0; i < toastSchedules.length; i++) {
+            toastSchedules.getAt(i).
+            ToastNotifier.removeFromSchedule(toastSchedules.getAt(i));
+        }
+
+        var TileUpdater = Notifications.TileUpdateManager.createTileUpdaterForApplication()
+        var tileSchedules = TileUpdater.getScheduledTileNotifications();
+        for (var i = 0; i < tileSchedules.length; i++) {
+            if (tileSchedules.getAt(i).tag == "Random")
+                TileUpdater.removeFromSchedule(tileSchedules.getAt(i));
         }
     },
 
@@ -186,6 +208,7 @@
         // Create the toast notification object.
         var toast = new Notifications.ScheduledToastNotification(toastXml, dueTime);
         toast.id = "Toast" + idNumber;
+        toast.tag = "Random";
 
         // Add to the schedule.
         Notifications.ToastNotificationManager.createToastNotifier().addToSchedule(toast);

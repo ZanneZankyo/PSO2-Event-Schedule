@@ -10,14 +10,7 @@
     else
         btn.text('Searching......');
     
-    $.ajax({
-        url: 'https://twitter.com/pso2_emg_hour',
-        dataType: 'text',
-        cache: false
-    }).done(function (data) {
-        var jObj = $(data);
-        AnalyzeRandomEvents(jObj);
-
+    FindRandomEventsTask(function () {
         if (window.navigator.language == 'zh-CN')
             btn.text('查找最近的随机紧急');
         else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
@@ -27,7 +20,19 @@
         else
             btn.text('Search Latest Random Quests');
     });
-    
+}
+
+function FindRandomEventsTask(callback) {
+    $.ajax({
+        url: 'https://twitter.com/pso2_emg_hour',
+        dataType: 'text',
+        timeout: 30000,
+        cache: false
+    }).done(function (data) {
+        var jObj = $(data);
+        AnalyzeRandomEvents(jObj);
+        callback();
+    });
 }
 
 function AnalyzeRandomEvents(jObj) {
