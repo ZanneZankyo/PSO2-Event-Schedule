@@ -70,45 +70,30 @@ function startAnalyze() {
     $('progress').animate({ top: '10px' }, 500);
 
     $.ajax({
-        url: 'http://pso2.jp/players/news/?mode=event',
+        url: 'http://pso2.jp/players/boost',
         dataType: 'text',
         cache: false
     }).done(function (data) {
         var jObj = $(data);
-        var latest = jObj.find('dd a').filter(function () {
-            return new RegExp(keyword).test($(this).text());
-        }).first();
-        console.log(latest.text());
-        var week = latest.text().split('の')[0];
-        $('#info').text(week);
+        var info = analyzeSchedule(jObj);
+        console.log(info);
+        buildInfo(info);
+        WinJS.UI.Animation.enterContent(document.getElementById('tableView'), null);
+        Zankyo.pushNotifications(info.events);
 
-        $.ajax({
-            url: 'http://pso2.jp/players/news' + latest.attr('href').split(/\./)[1],
-            dataType: 'text',
-            cache: false
-        }).done(function (data) {
-            jObj = $(data);
-            var info = analyzeSchedule(jObj);
-            console.log(info);
-            buildInfo(info);
-            WinJS.UI.Animation.enterContent(document.getElementById('tableView'), null);
-            Zankyo.pushNotifications(info.events);
+        if (window.navigator.language == 'zh-CN')
+            btn.text('分析时间表');
+        else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
+            btn.text('分析時間表');
+        else if (window.navigator.language == 'ja-JP')
+            btn.text('スケジュール分析開始');
+        else
+            btn.text('Analyze Schedule');
 
-            if (window.navigator.language == 'zh-CN')
-                btn.text('分析时间表');
-            else if (window.navigator.language == 'zh-TW' || window.navigator.language == 'zh-HK')
-                btn.text('分析時間表');
-            else if (window.navigator.language == 'ja-JP')
-                btn.text('スケジュール分析開始');
-            else
-                btn.text('Analyze Schedule');
-
-            $('progress').animate({ top: '-10px' }, 500);
-            info.week = week;
-            //Zankyo.setStorageJSON('info', info);
-            Zankyo.setInfo(info);
-            //localSettings.values['info'] = JSON.stringify(info);
-        });
+        $('progress').animate({ top: '-10px' }, 500);
+        //Zankyo.setStorageJSON('info', info);
+        Zankyo.setInfo(info);
+        //localSettings.values['info'] = JSON.stringify(info);
     });
 }
 
@@ -127,7 +112,8 @@ function buildRow(info) {
 
         var applicationData = Windows.Storage.ApplicationData.current;
         var localSettings = applicationData.localSettings;
-        if (!Zankyo.getStorage('showExpired') && events[i].time + 60 * 60 * 1000 < Date.now())
+        var showExpired = Zankyo.getStorage('showExpired');
+        if (!showExpired && events[i].endTime + 30 * 60 * 1000 < Date.now())
             continue;
 
         var date = new Date(events[i].time);

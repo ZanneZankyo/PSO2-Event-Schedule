@@ -1,4 +1,4 @@
-﻿(function () {
+﻿/*(function () {
     console.log("Background Task Run");
     "use strict";
     importScripts("../WinJS/js/base.js");
@@ -13,26 +13,64 @@
     var notifications = Windows.UI.Notifications;
 
     var date = new Date();
+    
+})*/
+
+function OnBackgroundActivated()
+{
     Zankyo.cancelRandomEventNotifications();
     FindRandomEventsTask(function () {
         backgroundTaskInstance.succeeded = true;
         close();
     });
-})
+}
 
 function registerBackgroundTasks(taskName, time) {
 
     "use strict";
-    var builder = new Windows.ApplicationModel.Background.BackgroundTaskBuilder();
+
+    var background = Windows.ApplicationModel.Background;
+
+    var builder = new background.BackgroundTaskBuilder();
+
     builder.name = taskName;
-    builder.taskEntryPoint = "js\\backgroundtask.js";
-    var timeTrigger = new Windows.ApplicationModel.Background.TimeTrigger(15, false);
-    //var timeTrigger = new Windows.ApplicationModel.Background.SystemTrigger(Windows.ApplicationModel.Background.SystemTriggerType.timeZoneChange, false);
+    //builder.taskEntryPoint = "js\\backgroundtask.js";
+
+    var timeTrigger = new background.TimeTrigger(15, false);
     builder.setTrigger(timeTrigger);
-    var conditionType = Windows.ApplicationModel.Background.SystemConditionType.internetAvailable;
-    var taskCondition = new Windows.ApplicationModel.Background.SystemCondition(conditionType);
+
+    var conditionType = background.SystemConditionType.internetAvailable;
+    var taskCondition = new background.SystemCondition(conditionType);
     builder.addCondition(taskCondition);
-    var backgroundTaskRegistration = builder.register();
+
+    //background.BackgroundExecutionManager.removeAccess();
+
+    background.BackgroundExecutionManager.requestAccessAsync().then(
+    function (result) {
+        switch (result) {
+            case background.BackgroundAccessStatus.denied:
+                // Background activity and updates for this app are disabled by the user. 
+                break;
+
+            case background.BackgroundAccessStatus.allowedWithAlwaysOnRealTimeConnectivity:
+                // Added to list of background apps.
+                // Set up background tasks; can use the network connectivity broker.
+                var backgroundTaskRegistration = builder.register();
+                break;
+
+            case background.BackgroundAccessStatus.allowedMayUseActiveRealTimeConnectivity:
+                // Added to list of background apps.
+                // Set up background tasks; cannot use the network connectivity broker.
+                var backgroundTaskRegistration = builder.register();
+                break;
+
+            case background.BackgroundAccessStatus.unspecified:
+                // The user didn't explicitly disable or enable access and updates. 
+                var backgroundTaskRegistration = builder.register();
+                break;
+        }
+    });
+
     console.log('background tasks registered');
     console.log(Windows.ApplicationModel.Background.BackgroundTaskRegistration.allTasks);
 }

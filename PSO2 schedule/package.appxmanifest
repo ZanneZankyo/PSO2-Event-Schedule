@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="234ZankyoStudio.PSO2EventSchedule" Version="1.1.2.0" Publisher="CN=3A93F7CD-27FA-4433-B4E0-D25EBE9DD5E6" />
+  <Identity Name="234ZankyoStudio.PSO2EventSchedule" Version="1.2.3.0" Publisher="CN=3A93F7CD-27FA-4433-B4E0-D25EBE9DD5E6" />
   <mp:PhoneIdentity PhoneProductId="4a462da5-0867-437f-92ca-eed2178595da" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>PSO2 Event Schedule</DisplayName>
@@ -26,7 +26,7 @@
         <uap:SplashScreen Image="images\splashscreen.png" />
       </uap:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="js\backgroundtask.js">
+        <Extension Category="windows.backgroundTasks" StartPage="js/background.js">
           <BackgroundTasks>
             <Task Type="timer" />
           </BackgroundTasks>
